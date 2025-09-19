@@ -8,18 +8,21 @@
           <!-- Project Name -->
           <div :class="{ 'has-error': $v.project.project_name.$error }">
             <label class="block text-sm font-medium text-white-dark">Project Name</label>
-            <input v-model.trim="$v.project.project_name.$model" type="text" placeholder="Enter Project Name"
-              class="form-input placeholder:text-white-dark" />
+            <multiselect v-model="$v.project.project_name.$model" :options="ProjectNameOption"
+              class="custom-multiselect" :searchable="true" :allow-empty="false" :multiple="false"
+              placeholder="Select or Create Project" :taggable="true" @tag="addNewProject" />
             <p v-if="$v.project.project_name.$error" class="text-danger mt-1">
               {{ $v.project.project_name.$errors[0].$message }}
             </p>
           </div>
 
+
           <!-- Developer Name -->
           <div :class="{ 'has-error': $v.project.developer_name.$error }">
             <label class="block text-sm font-medium text-white-dark">Developer Name</label>
-            <input v-model.trim="$v.project.developer_name.$model" type="text" placeholder="Enter Developer Name"
-              class="form-input placeholder:text-white-dark" />
+            <multiselect v-model="$v.project.developer_name.$model" :options="DeveloperNameOption"
+              class="custom-multiselect" :searchable="true" :allow-empty="false" :multiple="false"
+              placeholder="Select or Create Project" :taggable="true" @tag="addNewDeveloper" />
             <p v-if="$v.project.developer_name.$error" class="text-danger mt-1">
               {{ $v.project.developer_name.$errors[0].$message }}
             </p>
@@ -45,13 +48,22 @@
             </p>
           </div>
 
-          <!-- Size -->
+          <!-- size -->
           <div :class="{ 'has-error': $v.project.size.$error }">
-            <label class="block text-sm font-medium text-white-dark">Size (sq ft)</label>
-            <input v-model.trim="$v.project.size.$model" type="number" placeholder="Enter Size"
+            <label class="block text-sm font-medium text-white-dark">size </label>
+            <input v-model.trim="$v.project.size.$model" type="text" placeholder="Enter size"
               class="form-input placeholder:text-white-dark" />
             <p v-if="$v.project.size.$error" class="text-danger mt-1">
               {{ $v.project.size.$errors[0].$message }}
+            </p>
+          </div>
+          <!-- Area -->
+          <div :class="{ 'has-error': $v.project.area.$error }">
+            <label class="block text-sm font-medium text-white-dark">Area</label>
+            <input v-model.trim="$v.project.area.$model" type="text" placeholder="Enter area"
+              class="form-input placeholder:text-white-dark" />
+            <p v-if="$v.project.area.$error" class="text-danger mt-1">
+              {{ $v.project.area.$errors[0].$message }}
             </p>
           </div>
         </div>
@@ -69,13 +81,13 @@
             </p>
           </div>
 
-          <!-- Handover Range -->
-          <div :class="{ 'has-error': $v.dateRange.$error }">
+          <!-- Handover  -->
+          <div :class="{ 'has-error': $v.project.handover.$error }">
             <label class="block text-sm font-medium text-white-dark">Hand Over</label>
-            <flat-pickr v-model="dateRange" class="form-input" :config="rangeCalendar"
-              placeholder="Select handover period" />
-            <p v-if="$v.dateRange.$error" class="text-danger mt-1">
-              {{ $v.dateRange.$errors[0].$message }}
+            <input v-model.trim="$v.project.handover.$model" type="text" placeholder="Enter handover"
+              class="form-input placeholder:text-white-dark" />
+            <p v-if="$v.project.handover.$error" class="text-danger mt-1">
+              {{ $v.project.handover.$errors[0].$message }}
             </p>
           </div>
 
@@ -106,6 +118,14 @@
             </p>
           </div>
 
+          <!-- bedrooms -->
+          <div>
+            <label class="block text-sm font-medium text-white-dark">Bedrooms</label>
+            <input v-model="project.bedrooms" type="text" placeholder="Enter bedrooms "
+              class="form-input placeholder:text-white-dark" />
+          </div>
+
+
           <!-- Plan Status -->
           <div :class="{ 'has-error': $v.project.plan_status.$error }">
             <label class="block text-sm font-medium text-white-dark">Plan Status</label>
@@ -126,6 +146,42 @@
         </div>
       </div>
 
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-white-dark" for="uploadfile">
+          Upload Project Images :
+        </label>
+
+        <!-- Wrapper with border dotted -->
+        <div
+          class="mt-2 border-2 border-dotted border-gray-300 rounded-lg p-4 bg-gray-50 hover:border-lime-700 transition">
+          <!-- File Input -->
+          <div class="relative">
+            <input multiple
+              class="w-full bg-white rounded-lg border px-4 py-2 cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-lime-700 hover:file:bg-blue-100"
+              id="uploadfile" type="file" @change="handleFileUpload" accept="image/*" />
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <Iconfile :fill="true" />
+            </span>
+          </div>
+
+          <!-- Preview Section -->
+          <div v-if="projectjectDocuments.length" class="mt-4 flex flex-wrap gap-4">
+            <div v-for="(document, index) in projectjectDocuments" :key="index"
+              class="relative w-32 h-32 border rounded-lg overflow-hidden shadow-sm">
+              <!-- Close Button -->
+              <button type="button" @click="removeProjectImage(index)"
+                class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center rounded-full text-xs hover:bg-red-600 transition"
+                aria-label="Remove Image">
+                ✕
+              </button>
+              <!-- Image Preview -->
+              <img :src="document.preview" alt="Preview" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="mt-2">
         <template v-if="errorMessage">
           <div class="flex items-center p-3.5 rounded text-danger bg-danger-light dark:bg-danger-dark-light">
@@ -143,6 +199,7 @@
           </div>
         </button>
       </div>
+
     </form>
   </div>
 </template>
@@ -152,15 +209,17 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength, numeric, minValue, helpers } from "@vuelidate/validators";
+import { AllProjects } from "../composables/useProject";
 import Multiselect from "@suadelabs/vue3-multiselect";
-import flatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
 import "@suadelabs/vue3-multiselect/dist/vue3-multiselect.css";
 
-import { addProject, GetSingleProject, UpdateProject } from "../composables/useProject";
+import { GetSingleProject } from "../composables/useProject";
 import showMessage from "@/core/components/common/SweetAlert";
 import LoaderIcon from "@/core/components/icon/icon-loader.vue";
 import { useMeta } from '@/core/composables/use-meta';
+import axios from "axios";
+
+
 const router = useRouter();
 const route = useRoute();
 const isEditMode = computed(() => !!route.params.id);
@@ -168,28 +227,34 @@ useMeta({ title: `${isEditMode.value ? 'Update project' : 'Add project'} ` });
 const loader = ref(false);
 const errorMessage = ref<string | null>(null);
 const isLoading = ref(false);
-
+const projectjectDocuments = ref<any>([]);
+const ProjectNameOption = ref<any[]>([]);
+const DeveloperNameOption = ref<any[]>([]);
 const project = ref<any>({
   project_name: "",
   developer_name: "",
   location: "",
   city: "",
-  size: "",
+  area: "",
   property_type: [],
   min_price: "",
   max_price: "",
   plan_status: "",
+  handover: "",
+  bedrooms: "",
+  size: "",
 });
-
 const propertyTypeOptions = ref(["Apartment", "Penthouse", "Villa", "Town House"]);
 
+const addNewProject = (newName: string) => {
+  ProjectNameOption.value.push(newName);
+  project.value.project_name = newName;
+};
+const addNewDeveloper = (newName: string) => {
+  DeveloperNameOption.value.push(newName);
+  project.value.developer_name = newName;
+};
 
-const dateRange = ref<string>("");
-
-const rangeCalendar: any = ref({
-  dateFormat: "Y-m-d",
-  mode: "range",
-});
 
 const maxPriceValidator = helpers.withParams(
   { message: "Max Price must be greater than or equal to Min Price" },
@@ -206,13 +271,15 @@ const resetForm = () => {
     developer_name: "",
     location: "",
     city: "",
+    area: "",
     size: "",
     property_type: [],
     min_price: "",
     max_price: "",
     plan_status: "",
+    handover: "",
+    bedrooms: "",
   };
-  dateRange.value = "";
   $v.value.$reset();
   errorMessage.value = null;
 };
@@ -224,32 +291,38 @@ watch(() => route.params.id, (newId) => {
 });
 
 onMounted(async () => {
+  await fetchProjects();
   const projectId = route.params.id;
   if (projectId) {
     try {
       isLoading.value = true;
       const response: any = await GetSingleProject(projectId as string);
 
-      let range = "";
-      if (response.handover?.from && response.handover?.to) {
-        const from = new Date(response.handover.from).toISOString().split("T")[0];
-        const to = new Date(response.handover.to).toISOString().split("T")[0];
-        range = `${from} to ${to}`;
+      if (response.images && response.images.length > 0) {
+
+        projectjectDocuments.value = response.images.map((imgUrl: string) => ({
+          preview: `${import.meta.env.VITE_STORAGE_URL}${imgUrl}`,
+          url: imgUrl,
+        }));
       }
+
 
       project.value = {
         project_name: response.project_name,
         developer_name: response.developer_name,
         location: response.location,
         city: response.city,
+        area: response.area,
         size: response.size,
         property_type: response.property_type,
         min_price: response.min_price,
         max_price: response.max_price,
         plan_status: response.plan_status,
+        handover: response.handover,
+        bedrooms: response.bedrooms,
       };
 
-      dateRange.value = range;
+
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Failed to fetch project.";
     } finally {
@@ -258,65 +331,120 @@ onMounted(async () => {
   }
 });
 
+
+const fetchProjects = async () => {
+  try {
+    isLoading.value = true;
+    let response: any = await AllProjects();
+    ProjectNameOption.value = response.map((project: any) => project.project_name);
+    DeveloperNameOption.value = response.map((project: any) => project.developer_name);
+
+    isLoading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+};
 const rules = computed(() => ({
   project: {
     project_name: { required, maxLength: maxLength(255) },
     developer_name: { required, maxLength: maxLength(255) },
     location: { required, maxLength: maxLength(255) },
     city: { required, maxLength: maxLength(150) },
+    area: { required, },
     size: { required, numeric },
     property_type: { required },
     min_price: { required, numeric, minValue: minValue(1) },
     max_price: { required, numeric, minValue: minValue(1), maxPriceValidator },
     plan_status: { required },
+    handover: { required },
   },
-  dateRange: { required },
 }));
 
-const $v = useVuelidate(rules, { project, dateRange });
+const $v = useVuelidate(rules, { project });
 
 const maxPriceValid = computed(() => {
   if (!project.value.min_price || !project.value.max_price) return true;
   return Number(project.value.max_price) >= Number(project.value.min_price);
 });
 
+
+
+const handleFileUpload = (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
+  if (!files) return;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      projectjectDocuments.value.push({
+        preview: e.target.result,
+        file: file,
+      });
+    };
+
+    reader.readAsDataURL(file);
+  }
+};
+
+
+const removeProjectImage = (index: number) => {
+  projectjectDocuments.value.splice(index, 1);
+};
+
 const handleSubmit = async () => {
   $v.value.$touch();
   if (!$v.value.$invalid && maxPriceValid.value) {
-    let from: string | null = null;
-    let to: string | null = null;
-
-    if (dateRange.value) {
-      const parts = dateRange.value.split(" to ");
-      from = parts[0] ? new Date(parts[0]).toISOString() : null;
-      to = parts[1] ? new Date(parts[1]).toISOString() : null;
-    }
 
     try {
       isLoading.value = true;
 
-      const payload = {
-        project_name: project.value.project_name,
-        developer_name: project.value.developer_name,
-        location: project.value.location,
-        city: project.value.city,
-        size: project.value.size,
-        property_type: project.value.property_type,
-        min_price: Number(project.value.min_price),
-        max_price: Number(project.value.max_price),
-        plan_status: project.value.plan_status,
-        handoverFrom: from,
-        handoverTo: to,
-      };
+      const API_BASE = import.meta.env.VITE_API_URL;
+      const token = localStorage.getItem("token");
 
+      const formData = new FormData();
+      formData.append("project_name", project.value.project_name);
+      formData.append("developer_name", project.value.developer_name);
+      formData.append("location", project.value.location);
+      formData.append("city", project.value.city);
+      formData.append("area", project.value.area);
+      formData.append("size", project.value.size);
+      formData.append("min_price", project.value.min_price);
+      formData.append("max_price", project.value.max_price);
+      formData.append("plan_status", project.value.plan_status);
+      formData.append("handover", project.value.handover);
+      formData.append("property_type", project.value.property_type);
+      formData.append("bedrooms", project.value.bedrooms);
+
+   
+
+      projectjectDocuments.value.forEach((doc) => {
+        if (doc.file) {
+          formData.append("images", doc.file);
+        } else if (doc.url) {
+          formData.append("existingImages", doc.url);
+        }
+      });
       if (isEditMode.value) {
         const projectId = route.params.id;
-        await UpdateProject(projectId, payload);
-        showMessage("project updated successfully!", 'success');
+        await axios.put(`${API_BASE}/project/${projectId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
+        showMessage("Project updated successfully!", "success");
       } else {
-        await addProject(payload);
-        showMessage("project added successfully!", 'success');
+        await axios.post(`${API_BASE}/project`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
+        showMessage("Project added successfully!", "success");
       }
+
       resetForm();
       isLoading.value = false;
       router.push("/projects");
@@ -329,4 +457,7 @@ const handleSubmit = async () => {
     console.log("❌ Validation failed");
   }
 };
+
+
+
 </script>
