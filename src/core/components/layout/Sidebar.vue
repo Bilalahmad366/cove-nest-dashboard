@@ -22,7 +22,7 @@
             <li class="menu nav-item">
               <button type="button" class="nav-link group w-full cursor-pointer" @click="router.push('/dashboard')">
                 <div class="flex items-center">
-                  <icon-menu-dashboard class="group-hover:!text-primary shrink-0" />
+                  <icon-menu-dashboard class="group-hover:!text-lime-700 shrink-0" />
                   <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
                     {{ $t("Dashboard") }}
                   </span>
@@ -34,32 +34,37 @@
             </li>
 
             <li class="menu nav-item">
-              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Property' }"
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Projects' }"
                 @click="
-                  activeDropdown === 'Property'
+                  activeDropdown === 'Projects'
                     ? (activeDropdown = null)
-                    : (activeDropdown = 'Property')
+                    : (activeDropdown = 'Projects')
                   ">
                 <div class="flex items-center">
-                  <iconproperty class="group-hover:!text-primary shrink-0" />
+                  <iconproperty class="group-hover:!text-lime-700  shrink-0" />
 
                   <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
-                    $t("Property") }}</span>
+                    $t("Projects") }}</span>
                 </div>
                 <div :class="{
-                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Property',
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Projects',
                 }">
                   <icon-caret-down />
                 </div>
               </button>
-              <vue-collapsible :isOpen="activeDropdown === 'Property'">
+              <vue-collapsible :isOpen="activeDropdown === 'Projects'">
                 <ul class="sub-menu text-gray-500">
 
 
                   <li>
-                    <router-link to="/property/add-property" @click="toggleMobileMenu"
+                    <router-link to="/projects" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("Projects") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/projects/add-project" @click="toggleMobileMenu"
                       class="flex items-center space-x-2 group">
-                      <span>{{ $t("Add property") }}</span>
+                      <span>{{ $t("Add Project") }}</span>
                     </router-link>
                   </li>
 

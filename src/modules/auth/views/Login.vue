@@ -9,7 +9,8 @@
       <img src="/assets/images/auth/coming-soon-object3.png" alt="image" class="absolute right-0 top-0 h-[300px]" />
       <img src="/assets/images/auth/polygon-object.svg" alt="image" class="absolute bottom-0 end-[28%]" />
       <div class="relative flex w-full max-w-[1502px] flex-col justify-between overflow-hidden rounded-md bg-white/60 backdrop-blur-lg dark:bg-black/50 lg:min-h-[650px] lg:flex-row lg:gap-10 xl:gap-0">
-        <div class="relative hidden w-full items-center justify-center bg-[linear-gradient(225deg,rgba(0,83,200,4)_0%,rgba(42,215,255,1)_100%)] p-5 lg:inline-flex lg:max-w-[835px] xl:-ms-28 ltr:xl:skew-x-[14deg] rtl:xl:skew-x-[-14deg]">
+        <div class="relative hidden w-full items-center justify-center bg-[linear-gradient(225deg,#2E5E2A_0%,#C5A449_100%)]
+ p-5 lg:inline-flex lg:max-w-[835px] xl:-ms-28 ltr:xl:skew-x-[14deg] rtl:xl:skew-x-[-14deg]">
           <div class="absolute inset-y-0 w-8 from-primary/10 via-transparent to-transparent ltr:-right-10 ltr:bg-gradient-to-r rtl:-left-10 rtl:bg-gradient-to-l xl:w-16 ltr:xl:-right-20 rtl:xl:-left-20"></div>
           <div class="ltr:xl:-skew-x-[14deg] rtl:xl:skew-x-[14deg]">
             <router-link to="/" class="w-48 block lg:w-72 ms-10">
@@ -62,7 +63,7 @@
           </div>
           <div class="w-full max-w-[440px] lg:mt-16">
             <div class="mb-10">
-              <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
+              <h1 class="text-3xl font-extrabold uppercase !leading-snug text-success md:text-4xl">Sign in</h1>
               <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
             </div>
 

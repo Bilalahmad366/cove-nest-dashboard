@@ -111,11 +111,11 @@
     .sidebar ul.sub-menu li button,
     .sidebar ul.sub-menu li a {
         @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
-hover:text-primary hover:before:!bg-primary ltr:before:mr-2 rtl:before:ml-2 dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary;
+hover:text-lime-700 hover:before:!bg-lime-700 ltr:before:mr-2 rtl:before:ml-2 dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary;
     }
     .sidebar ul.sub-menu li button.active,
     .sidebar ul.sub-menu li a.active {
-        @apply text-primary before:bg-primary;
+        @apply text-lime-700 before:bg-lime-700;
     }
 
     .sidebar .nav-item a div:first-child svg,
@@ -330,9 +330,10 @@ hover:text-primary hover:before:!bg-primary ltr:before:mr-2 rtl:before:ml-2 dark
         @apply border-dark text-dark shadow-none hover:bg-dark hover:text-white;
     }
 
-    .btn-gradient {
-        @apply bg-gradient-to-r from-[#0053c8] to-[#2ad7ff] hover:to-[#0053c8] hover:from-[#2ad7ff] text-white;
-    }
+.btn-gradient {
+    @apply bg-gradient-to-r from-[#0B3D27] to-[#6A994E] hover:from-[#6A994E] hover:to-[#0B3D27] text-white;
+}
+
 
     /* Badge */
     .badge {

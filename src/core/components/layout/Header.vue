@@ -150,7 +150,7 @@
               <button type="button" class="relative group block">
                 <div
                   v-if="userData.email"
-                  class="rounded-full w-10 h-10 flex items-center justify-center bg-primary text-white font-bold text-lg"
+                  class="rounded-full w-10 h-10 flex items-center justify-center bg-lime-800 text-white font-bold text-lg"
                 >
                   {{ userData.email.charAt(0).toUpperCase() }}
                 </div>

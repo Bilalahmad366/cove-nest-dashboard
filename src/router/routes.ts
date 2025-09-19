@@ -37,7 +37,6 @@ export const authRoutes = [
   },
 ];
 
-
 export const appRoutes = [
   // Dashboard Routes
   {
@@ -50,19 +49,37 @@ export const appRoutes = [
     },
   },
 
-  //  Property Routes
+  //  projects Routes
   {
-    path: "/property/add-property",
-    name: "add-property",
-    component: () => import("@/modules/Property/veiws/AddProperty.vue"),
+    path: "/projects",
+    name: "projects",
+    component: () => import("@/modules/Projects/veiws/Projects.vue"),
     meta: {
       layout: "app",
       requiresAuth: true,
     },
   },
-  
   {
-    path: "/:catchAll(.*)", 
+    path: "/projects/add-project",
+    name: "add-project",
+    component: () => import("@/modules/Projects/veiws/AddProjects.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/projects/update-project/:id",
+    name: "update-project",
+    component: () => import("@/modules/Projects/veiws/AddProjects.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+
+  {
+    path: "/:catchAll(.*)",
     name: "page-not-found",
     component: () => import("@/core/views/PageNotFound.vue"),
     meta: {

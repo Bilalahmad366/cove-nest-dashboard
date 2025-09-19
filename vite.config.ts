@@ -19,7 +19,7 @@ export default defineConfig({
         include: ['quill'],
     },
     server: {
-        port: 5173, // Change this to an available port
-        host: "0.0.0.0" // Or 0.0.0.0 if needed
+        port: 5173, 
+        host: "0.0.0.0" 
       }
 });
