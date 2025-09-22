@@ -66,6 +66,19 @@
               {{ $v.project.area.$errors[0].$message }}
             </p>
           </div>
+          <!-- Best Toggle -->
+          <div>
+            <label class="block text-sm font-medium text-white-dark mb-2">Mark as Best</label>
+            <button type="button" @click="project.is_best = !project.is_best" :class="[
+              'relative inline-flex h-6 w-12 items-center rounded-full transition',
+              project.is_best ? 'bg-lime-700' : 'bg-gray-400'
+            ]">
+              <span :class="[
+                'inline-block h-5 w-5 transform rounded-full bg-white transition',
+                project.is_best ? 'translate-x-6' : 'translate-x-1'
+              ]" />
+            </button>
+          </div>
         </div>
 
         <div class="space-y-4">
@@ -79,6 +92,14 @@
             <p v-if="$v.project.property_type.$error" class="text-danger mt-1">
               {{ $v.project.property_type.$errors[0].$message }}
             </p>
+          </div>
+
+
+          <!-- Categories -->
+          <div>
+            <label class="block text-sm font-medium text-white-dark">Categories</label>
+            <multiselect v-model="project.category" :options="categoryOptions" class="custom-multiselect"
+              :multiple="false" :searchable="false" placeholder="Select or add categories" />
           </div>
 
           <!-- Handover  -->
@@ -243,8 +264,12 @@ const project = ref<any>({
   handover: "",
   bedrooms: "",
   size: "",
+  category: "",
+  is_best: false,
 });
+const categoryOptions = ref(["Waterfront Properties", "Near Golf Course", "Luxury Properties", "Beachfront Properties"]);
 const propertyTypeOptions = ref(["Apartment", "Penthouse", "Villa", "Town House"]);
+
 
 const addNewProject = (newName: string) => {
   ProjectNameOption.value.push(newName);
@@ -279,6 +304,8 @@ const resetForm = () => {
     plan_status: "",
     handover: "",
     bedrooms: "",
+    category: "",
+    is_best: false,
   };
   $v.value.$reset();
   errorMessage.value = null;
@@ -320,6 +347,8 @@ onMounted(async () => {
         plan_status: response.plan_status,
         handover: response.handover,
         bedrooms: response.bedrooms,
+        category: response.category,
+        is_best: response.isBestArea,
       };
 
 
@@ -416,8 +445,9 @@ const handleSubmit = async () => {
       formData.append("handover", project.value.handover);
       formData.append("property_type", project.value.property_type);
       formData.append("bedrooms", project.value.bedrooms);
+      formData.append("category", project.value.category);
+      formData.append("isBestArea", project.value.is_best);
 
-   
 
       projectjectDocuments.value.forEach((doc) => {
         if (doc.file) {
