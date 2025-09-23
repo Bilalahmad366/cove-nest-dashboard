@@ -66,19 +66,17 @@
               {{ $v.project.area.$errors[0].$message }}
             </p>
           </div>
-          <!-- Best Toggle -->
-          <div>
-            <label class="block text-sm font-medium text-white-dark mb-2">Mark as Best</label>
-            <button type="button" @click="project.is_best = !project.is_best" :class="[
-              'relative inline-flex h-6 w-12 items-center rounded-full transition',
-              project.is_best ? 'bg-lime-700' : 'bg-gray-400'
-            ]">
-              <span :class="[
-                'inline-block h-5 w-5 transform rounded-full bg-white transition',
-                project.is_best ? 'translate-x-6' : 'translate-x-1'
-              ]" />
-            </button>
+          <!-- Description -->
+          <div :class="{ 'has-error': $v.project.description.$error }">
+            <label class="block text-sm font-medium text-white-dark">Description</label>
+            <textarea v-model.trim="$v.project.description.$model as string" placeholder="Enter project description"
+              rows="4" class="form-input placeholder:text-white-dark resize-none"></textarea>
+            <p v-if="$v.project.description.$error" class="text-danger mt-1">
+              {{ $v.project.description.$errors[0].$message }}
+            </p>
           </div>
+
+
         </div>
 
         <div class="space-y-4">
@@ -139,13 +137,27 @@
             </p>
           </div>
 
-          <!-- bedrooms -->
-          <div>
-            <label class="block text-sm font-medium text-white-dark">Bedrooms</label>
-            <input v-model="project.bedrooms" type="text" placeholder="Enter bedrooms "
-              class="form-input placeholder:text-white-dark" />
-          </div>
 
+          <!-- Amenities Section -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-white-dark">Amenities</label>
+
+            <div class="flex flex-wrap items-center gap-2 border rounded p-2 cursor-text" @click="inputRef?.focus()">
+              <!-- Tags -->
+              <span v-for="(amenity, index) in amenities" :key="index"
+                class="bg-lime-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
+                {{ amenity }}
+                <button type="button" class="text-xs bg-white/30 rounded-full px-1" @click.stop="removeAmenity(index)">
+                  ✕
+                </button>
+              </span>
+
+              <!-- Input -->
+              <input ref="inputRef" v-model="newAmenity" @keydown.enter.prevent="addAmenity" @keydown="checkComma"
+                placeholder="Type and press Enter or Comma to Add Multiple"
+                class="flex-1 outline-none text-sm bg-transparent" />
+            </div>
+          </div>
 
           <!-- Plan Status -->
           <div :class="{ 'has-error': $v.project.plan_status.$error }">
@@ -164,6 +176,21 @@
               {{ $v.project.plan_status.$errors[0].$message }}
             </p>
           </div>
+
+          <!-- Best Toggle -->
+          <div>
+            <label class="block text-sm font-medium text-white-dark mb-2">Mark as Best Area</label>
+            <button type="button" @click="project.is_best = !project.is_best" :class="[
+              'relative inline-flex h-6 w-12 items-center rounded-full transition',
+              project.is_best ? 'bg-lime-700' : 'bg-gray-400'
+            ]">
+              <span :class="[
+                'inline-block h-5 w-5 transform rounded-full bg-white transition',
+                project.is_best ? 'translate-x-6' : 'translate-x-1'
+              ]" />
+            </button>
+          </div>
+
         </div>
       </div>
 
@@ -241,6 +268,31 @@ import { useMeta } from '@/core/composables/use-meta';
 import axios from "axios";
 
 
+const amenities = ref<string[]>([]);
+const newAmenity = ref("");
+const inputRef = ref<HTMLInputElement | null>(null);
+
+function addAmenity() {
+  if (newAmenity.value.trim() !== "") {
+    amenities.value.push(newAmenity.value.trim());
+    newAmenity.value = "";
+  }
+}
+
+function checkComma(e: KeyboardEvent) {
+  if (e.key === ",") {
+    e.preventDefault();
+    addAmenity();
+  }
+}
+
+
+function removeAmenity(index: number) {
+  amenities.value.splice(index, 1);
+}
+
+
+
 const router = useRouter();
 const route = useRoute();
 const isEditMode = computed(() => !!route.params.id);
@@ -262,12 +314,13 @@ const project = ref<any>({
   max_price: "",
   plan_status: "",
   handover: "",
-  bedrooms: "",
   size: "",
   category: "",
+  description: "",
   is_best: false,
 });
-const categoryOptions = ref(["Waterfront Properties", "Near Golf Course", "Luxury Properties", "Beachfront Properties"]);
+
+const categoryOptions = ref(["Waterfront Properties", "Near Golf Course", "Luxury Properties", "Beachfront Properties", "Branded Residences"]);
 const propertyTypeOptions = ref(["Apartment", "Penthouse", "Villa", "Town House"]);
 
 
@@ -303,10 +356,11 @@ const resetForm = () => {
     max_price: "",
     plan_status: "",
     handover: "",
-    bedrooms: "",
     category: "",
+    description: "",
     is_best: false,
   };
+  amenities.value = [];
   $v.value.$reset();
   errorMessage.value = null;
 };
@@ -346,11 +400,11 @@ onMounted(async () => {
         max_price: response.max_price,
         plan_status: response.plan_status,
         handover: response.handover,
-        bedrooms: response.bedrooms,
         category: response.category,
+        description: response.description,
         is_best: response.isBestArea,
       };
-
+    amenities.value = response.amenities;
 
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Failed to fetch project.";
@@ -385,6 +439,7 @@ const rules = computed(() => ({
     min_price: { required, numeric, minValue: minValue(1) },
     max_price: { required, numeric, minValue: minValue(1), maxPriceValidator },
     plan_status: { required },
+    description: { required },
     handover: { required },
   },
 }));
@@ -444,10 +499,12 @@ const handleSubmit = async () => {
       formData.append("plan_status", project.value.plan_status);
       formData.append("handover", project.value.handover);
       formData.append("property_type", project.value.property_type);
-      formData.append("bedrooms", project.value.bedrooms);
       formData.append("category", project.value.category);
       formData.append("isBestArea", project.value.is_best);
-
+      formData.append("description", project.value.description);
+      amenities.value.forEach((item) => {
+        formData.append("amenities[]", item);
+      });
 
       projectjectDocuments.value.forEach((doc) => {
         if (doc.file) {
