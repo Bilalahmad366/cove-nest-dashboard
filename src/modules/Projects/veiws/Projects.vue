@@ -50,7 +50,8 @@ import { AllProjects, DeleteProject } from "../composables/useProject";
 import { showAlert } from "@/core/components/common/alertForDelete";
 import showMessage from "@/core/components/common/SweetAlert";
 import SkeletonLoader from "@/core/components/common/SkeletonLoader.vue";
-
+import { useMeta } from '@/core/composables/use-meta';
+useMeta({ title: `projects` });
 onMounted(async () => {
     await fetchProjects();
 });

@@ -78,6 +78,63 @@ export const appRoutes = [
     },
   },
 
+  //  news Routes
+  {
+    path: "/news",
+    name: "news",
+    component: () => import("@/modules/News/views/news.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/news/add-news",
+    name: "add-news",
+    component: () => import("@/modules/News/views/addNews.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/news/update-news/:id",
+    name: "update-news",
+    component: () => import("@/modules/News/views/addNews.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  //  events Routes
+  {
+    path: "/events",
+    name: "events",
+    component: () => import("@/modules/Events/views/events.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/events/add-event",
+    name: "add-event",
+    component: () => import("@/modules/Events/views/addEvent.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/events/update-event/:id",
+    name: "update-event",
+    component: () => import("@/modules/Events/views/addEvent.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+
   {
     path: "/:catchAll(.*)",
     name: "page-not-found",

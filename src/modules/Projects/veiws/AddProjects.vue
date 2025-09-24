@@ -204,9 +204,10 @@
           class="mt-2 border-2 border-dotted border-gray-300 rounded-lg p-4 bg-gray-50 hover:border-lime-700 transition">
           <!-- File Input -->
           <div class="relative">
-            <input multiple
-              class="w-full bg-white rounded-lg border px-4 py-2 cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-lime-700 hover:file:bg-blue-100"
-              id="uploadfile" type="file" @change="handleFileUpload" accept="image/*" />
+            <input multiple class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                   file:rounded-full file:border-0 file:text-sm file:font-semibold
+                   file:bg-lime-50 file:text-lime-700 hover:file:bg-lime-100" id="uploadfile" type="file"
+              @change="handleFileUpload" accept="image/*" />
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
               <Iconfile :fill="true" />
             </span>
@@ -272,26 +273,6 @@ const amenities = ref<string[]>([]);
 const newAmenity = ref("");
 const inputRef = ref<HTMLInputElement | null>(null);
 
-function addAmenity() {
-  if (newAmenity.value.trim() !== "") {
-    amenities.value.push(newAmenity.value.trim());
-    newAmenity.value = "";
-  }
-}
-
-function checkComma(e: KeyboardEvent) {
-  if (e.key === ",") {
-    e.preventDefault();
-    addAmenity();
-  }
-}
-
-
-function removeAmenity(index: number) {
-  amenities.value.splice(index, 1);
-}
-
-
 
 const router = useRouter();
 const route = useRoute();
@@ -332,6 +313,22 @@ const addNewDeveloper = (newName: string) => {
   DeveloperNameOption.value.push(newName);
   project.value.developer_name = newName;
 };
+function addAmenity() {
+  if (newAmenity.value.trim() !== "") {
+    amenities.value.push(newAmenity.value.trim());
+    newAmenity.value = "";
+  }
+}
+function checkComma(e: KeyboardEvent) {
+  if (e.key === ",") {
+    e.preventDefault();
+    addAmenity();
+  }
+}
+
+function removeAmenity(index: number) {
+  amenities.value.splice(index, 1);
+}
 
 
 const maxPriceValidator = helpers.withParams(
@@ -404,7 +401,7 @@ onMounted(async () => {
         description: response.description,
         is_best: response.isBestArea,
       };
-    amenities.value = response.amenities;
+      amenities.value = response.amenities;
 
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Failed to fetch project.";
