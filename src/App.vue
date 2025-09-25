@@ -20,7 +20,7 @@
     const store = useAppStore();
 
     // meta
-    useMeta({ title: 'Rent Management' });
+    useMeta({ title: 'Dashboard ' });
     store.setMainLayout('auth');
 
     const mainLayout = computed(() => {

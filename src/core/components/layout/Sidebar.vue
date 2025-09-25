@@ -113,11 +113,12 @@
             </li>
             <!-- events  -->
             <li class="menu nav-item">
-              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Events' }" @click="
-                activeDropdown === 'Events'
-                  ? (activeDropdown = null)
-                  : (activeDropdown = 'Events')
-                ">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Events' }"
+                @click="
+                  activeDropdown === 'Events'
+                    ? (activeDropdown = null)
+                    : (activeDropdown = 'Events')
+                  ">
                 <div class="flex items-center">
                   <IconEvent class="group-hover:!text-lime-700  shrink-0" />
 
@@ -150,6 +151,125 @@
                 </ul>
               </vue-collapsible>
             </li>
+            <!-- blog  -->
+            <li class="menu nav-item">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Blogs' }"
+                @click="
+                  activeDropdown === 'Blogs'
+                    ? (activeDropdown = null)
+                    : (activeDropdown = 'Blogs')
+                  ">
+                <div class="flex items-center">
+                  <IconBlog class="group-hover:!text-lime-700  shrink-0" />
+
+                  <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
+                    $t("Blogs") }}</span>
+                </div>
+                <div :class="{
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Blogs',
+                }">
+                  <icon-caret-down />
+                </div>
+              </button>
+              <vue-collapsible :isOpen="activeDropdown === 'Blogs'">
+                <ul class="sub-menu text-gray-500">
+
+
+                  <li>
+                    <router-link to="/blogs" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("Blogs") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/blogs/add-blog" @click="toggleMobileMenu"
+                      class="flex items-center space-x-2 group">
+                      <span>{{ $t("Add Blog") }}</span>
+                    </router-link>
+                  </li>
+
+
+                </ul>
+              </vue-collapsible>
+            </li>
+            <!-- Video  -->
+            <li class="menu nav-item">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Videos' }"
+                @click="
+                  activeDropdown === 'Videos'
+                    ? (activeDropdown = null)
+                    : (activeDropdown = 'Videos')
+                  ">
+                <div class="flex items-center">
+                  <IconVideo class="group-hover:!text-lime-700  shrink-0" />
+
+                  <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
+                    $t("Videos") }}</span>
+                </div>
+                <div :class="{
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Videos',
+                }">
+                  <icon-caret-down />
+                </div>
+              </button>
+              <vue-collapsible :isOpen="activeDropdown === 'Videos'">
+                <ul class="sub-menu text-gray-500">
+
+
+                  <li>
+                    <router-link to="/videos" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("videos") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/videos/add-video" @click="toggleMobileMenu"
+                      class="flex items-center space-x-2 group">
+                      <span>{{ $t("Add video") }}</span>
+                    </router-link>
+                  </li>
+
+
+                </ul>
+              </vue-collapsible>
+            </li>
+            <!-- FAQ  -->
+            <li class="menu nav-item">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'FAQ' }" @click="
+                activeDropdown === 'FAQ'
+                  ? (activeDropdown = null)
+                  : (activeDropdown = 'FAQ')
+                ">
+                <div class="flex items-center">
+                  <IconFAQ class="group-hover:!text-lime-700  shrink-0" />
+
+                  <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
+                    $t("FAQ") }}</span>
+                </div>
+                <div :class="{
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'FAQ',
+                }">
+                  <icon-caret-down />
+                </div>
+              </button>
+              <vue-collapsible :isOpen="activeDropdown === 'FAQ'">
+                <ul class="sub-menu text-gray-500">
+
+
+                  <li>
+                    <router-link to="/faq" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("FAQs") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/faq/add-faq" @click="toggleMobileMenu"
+                      class="flex items-center space-x-2 group">
+                      <span>{{ $t("Add FAQ") }}</span>
+                    </router-link>
+                  </li>
+
+
+                </ul>
+              </vue-collapsible>
+            </li>
 
 
 
@@ -170,6 +290,9 @@ import IconMenuDashboard from "@/core/components/icon/menu/icon-menu-dashboard.v
 import IconCaretDown from "@/core/components/icon/icon-caret-down.vue";
 import IconNews from "../icon/menu/icon-news.vue";
 import IconEvent from "../icon/menu/icon-event.vue";
+import IconBlog from "../icon/menu/icon-blog.vue";
+import IconVideo from "../icon/menu/icon-video.vue";
+import IconFAQ from "../icon/menu/icon-faq.vue";
 import router from "@/router";
 
 const store = useAppStore();

@@ -28,13 +28,13 @@
                     <template #action="data">
                         <div class="flex items-center gap-2">
                             <div>
-                                <button @click="editNews(data)" type="button" v-tippy:Edit>
+                                <button @click="editBlog(data)" type="button" v-tippy:Edit>
                                     <iconEdit />
                                 </button>
                                 <tippy target="Edit">Edit</tippy>
                             </div>
                             <div>
-                                <button @click="deleteNews(data)" type="button" v-tippy:Delete>
+                                <button @click="deleteBlog(data)" type="button" v-tippy:Delete>
                                     <iconTrash />
                                 </button>
                                 <tippy target="Delete">Delete</tippy>
@@ -54,16 +54,16 @@ import { useAppStore } from "@/core/store";
 import router from "@/router";
 import iconTrash from "@/core/components/icon/icon-trash.vue";
 import iconEdit from "@/core/components/icon/icon-edit.vue";
-import { AllNews, DeleteNews } from "../composables/useNews"; 
+import { AllBlogs, DeleteBlog } from "../composables/useBlogs"; 
 import { showAlert } from "@/core/components/common/alertForDelete";
 import showMessage from "@/core/components/common/SweetAlert";
 import SkeletonLoader from "@/core/components/common/SkeletonLoader.vue";
-import { useMeta } from '@/core/composables/use-meta';
+import { useMeta } from "@/core/composables/use-meta";
 
-useMeta({ title: `news` });
+useMeta({ title: `blogs` });
 
 onMounted(async () => {
-    await fetchNews();
+    await fetchBlogs();
 });
 
 const isLoading = ref(false);
@@ -73,43 +73,39 @@ const search = ref("");
 const cols = ref([
     { field: "title", title: "Title", visible: true, hide: false, disabled: true },
     { field: "date", title: "Date", visible: true, hide: false, disabled: true },
+    { field: "description", title: "Description", visible: true, hide: false, disabled: true },
     { field: "action", title: "Action", headerClass: "justify-center", filter: false, excludeactions: true },
 ]);
 
 const rows = ref<any>([]);
 
-const deleteNews = async (data) => {
+const deleteBlog = async (data) => {
     const isConfirmed = await showAlert();
     if (isConfirmed) {
         const id = data.value._id;
         try {
             isLoading.value = true;
-            await DeleteNews(id);
-            showMessage("News deleted !", "success");
+            await DeleteBlog(id);
+            showMessage("Blog deleted !", "success");
         } catch (error) {
             console.log(error);
             showMessage("Error !", "error");
         } finally {
             isLoading.value = false;
-            await fetchNews();
+            await fetchBlogs();
         }
     }
 };
 
-const editNews = async (data: any) => {
-    router.push({ name: 'update-news', params: { id: data.value._id } });
+const editBlog = async (data: any) => {
+    router.push({ name: "update-blog", params: { id: data.value._id } });
 };
 
-const fetchNews = async () => {
+const fetchBlogs = async () => {
     try {
         isLoading.value = true;
-        let response: any = await AllNews();
-        rows.value = response.map((news: any) => {
-            return {
-                ...news,
-                date: news.date ? news.date.split("T")[0] : "N/A", // 👈 format date
-            };
-        });
+        let response: any = await AllBlogs();
+        rows.value = response;
         isLoading.value = false;
     } catch (error) {
         console.log(error);

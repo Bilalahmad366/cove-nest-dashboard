@@ -134,6 +134,90 @@ export const appRoutes = [
       requiresAuth: true,
     },
   },
+  //  blogs Routes
+  {
+    path: "/blogs",
+    name: "blogs",
+    component: () => import("@/modules/blogs/views/blogs.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/blogs/add-blog",
+    name: "add-blog",
+    component: () => import("@/modules/blogs/views/addBlog.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/blogs/update-blog/:id",
+    name: "update-blog",
+    component: () => import("@/modules/blogs/views/addBlog.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  //  video Routes
+  {
+    path: "/videos",
+    name: "videos",
+    component: () => import("@/modules/videos/views/videos.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/videos/add-video",
+    name: "add-video",
+    component: () => import("@/modules/videos/views/addVideo.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/videos/update-video/:id",
+    name: "update-video",
+    component: () => import("@/modules/videos/views/addVideo.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  //  FAQ Routes
+  {
+    path: "/faq",
+    name: "faq",
+    component: () => import("@/modules/faq/views/Faq.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/faq/add-faq",
+    name: "add-faq",
+    component: () => import("@/modules/faq/views/addFaq.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/faq/update-faq/:id",
+    name: "update-faq",
+    component: () => import("@/modules/faq/views/addFaq.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
 
   {
     path: "/:catchAll(.*)",
