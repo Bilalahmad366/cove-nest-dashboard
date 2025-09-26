@@ -19,19 +19,19 @@
           wheelPropagation: false,
         }" class="h-[calc(100vh-80px)] relative">
           <ul class="relative font-semibold space-y-0.5  mt-2.5 p-4 py-0">
-            <li class="menu nav-item">
+            <!-- <li class="menu nav-item">
               <button type="button" class="nav-link group w-full cursor-pointer" @click="router.push('/dashboard')">
                 <div class="flex items-center">
                   <icon-menu-dashboard class="group-hover:!text-lime-700 shrink-0" />
                   <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
                     {{ $t("Dashboard") }}
                   </span>
-                </div>
+                </div> -->
                 <!-- <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== 'dashboard' }">
                                     <icon-caret-down />
                                 </div> -->
-              </button>
-            </li>
+              <!-- </button>
+            </li> -->
             <!-- projects -->
             <li class="menu nav-item">
               <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Projects' }"

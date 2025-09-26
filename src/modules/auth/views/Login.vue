@@ -202,20 +202,14 @@ const login = async () => {
   if ($v.value.$invalid) {
     return false; 
   }
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
   const postData = { email: form.email, password: form.password };
   loader.value = true;
   errorMessage.value = null;
   try {
-    if (postData.email === adminEmail && postData.password === adminPassword) {
-      store.setIsAdmin(true);
-      router.push("/admin/dashboard"); 
-      return;
-    }
+   
     await Login(postData); 
-    router.push("/dashboard"); 
+    router.push("/projects"); 
   } catch (err: any) {
     errorMessage.value = err.response?.data?.message || "Request failed";
     console.error("Login failed:", err);
