@@ -379,7 +379,8 @@ onMounted(async () => {
       if (response.images && response.images.length > 0) {
 
         projectjectDocuments.value = response.images.map((imgUrl: string) => ({
-          preview: `${import.meta.env.VITE_STORAGE_URL}${imgUrl}`,
+          // preview: `${import.meta.env.VITE_STORAGE_URL}${imgUrl}`,   local
+          preview: imgUrl,
           url: imgUrl,
         }));
       }

@@ -140,7 +140,8 @@ onMounted(async () => {
             };
             if (response.image) {
                 newsImage.value = {
-                    preview: `${import.meta.env.VITE_STORAGE_URL}${response.image}`,
+                    // preview: `${import.meta.env.VITE_STORAGE_URL}${response.image}`, local
+                    preview: response.image,
                     url: response.image,
                 };
             }
