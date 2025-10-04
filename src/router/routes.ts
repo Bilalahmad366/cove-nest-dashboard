@@ -194,7 +194,7 @@ export const appRoutes = [
   {
     path: "/faq",
     name: "faq",
-    component: () => import("@/modules/faq/views/Faq.vue"),
+    component: () => import("@/modules/FAQ/views/Faq.vue"),
     meta: {
       layout: "app",
       requiresAuth: true,
@@ -203,7 +203,7 @@ export const appRoutes = [
   {
     path: "/faq/add-faq",
     name: "add-faq",
-    component: () => import("@/modules/faq/views/addFaq.vue"),
+    component: () => import("@/modules/FAQ/views/addFaq.vue"),
     meta: {
       layout: "app",
       requiresAuth: true,
@@ -212,7 +212,7 @@ export const appRoutes = [
   {
     path: "/faq/update-faq/:id",
     name: "update-faq",
-    component: () => import("@/modules/faq/views/addFaq.vue"),
+    component: () => import("@/modules/FAQ/views/addFaq.vue"),
     meta: {
       layout: "app",
       requiresAuth: true,
