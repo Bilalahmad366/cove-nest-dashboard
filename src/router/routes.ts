@@ -48,6 +48,15 @@ export const appRoutes = [
       // requiresAuth: true,
     },
   },
+  {
+    path: "/expert-requests",
+    name: "expert-requests",
+    component: () => import("@/core/views/expertRequest.vue"),
+    meta: {
+      layout: "app",
+      // requiresAuth: true,
+    },
+  },
 
   //  projects Routes
   {
