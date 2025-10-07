@@ -113,28 +113,20 @@
           <!-- Minimum Price -->
           <div :class="{ 'has-error': $v.project.min_price.$error }">
             <label class="block text-sm font-medium text-white-dark">Minimum Price</label>
-            <input v-model.trim="$v.project.min_price.$model" type="number" placeholder="Enter Minimum Price"
+            <input v-model.trim="$v.project.min_price.$model" type="test" placeholder="Enter Minimum Price"
               class="form-input placeholder:text-white-dark" />
             <p v-if="$v.project.min_price.$error" class="text-danger mt-1">
               <span v-if="!$v.project.min_price.required">Min Price is required</span>
-              <span v-else-if="!$v.project.min_price.numeric">Min Price must be a number</span>
-              <span v-else-if="!$v.project.min_price.minValue">Min Price must be at least 1</span>
             </p>
           </div>
 
           <!-- Maximum Price -->
-          <div :class="{ 'has-error': $v.project.max_price.$error || !maxPriceValid }">
+          <div>
             <label class="block text-sm font-medium text-white-dark">Maximum Price</label>
-            <input v-model.trim="$v.project.max_price.$model" type="number" placeholder="Enter Maximum Price"
+            <input v-model="project.max_price" type="text" placeholder="Enter Maximum Price"
               class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.max_price.$error" class="text-danger mt-1">
-              <span v-if="!$v.project.max_price.required">Max Price is required</span>
-              <span v-else-if="!$v.project.max_price.numeric">Max Price must be a number</span>
-              <span v-else-if="!$v.project.max_price.minValue">Max Price must be at least 1</span>
-            </p>
-            <p v-if="!maxPriceValid" class="text-danger mt-1">
-              Max Price should be greater than or equal to Min Price
-            </p>
+
+
           </div>
 
 
@@ -242,8 +234,8 @@
 
         <button type="submit"
           class="btn btn-gradient !mt-2 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
-          <span v-if="!loader">{{ isEditMode ? 'Save' : 'Add Project' }}</span>
-          <div v-if="loader" class="flex justify-center">
+          <span v-if="!isLoading">{{ isEditMode ? 'Save' : 'Add Project' }}</span>
+          <div v-if="isLoading" class="flex justify-center">
             <LoaderIcon class="animate-spin h-5 w-5 text-white" />
           </div>
         </button>
@@ -432,10 +424,9 @@ const rules = computed(() => ({
     location: { required, maxLength: maxLength(255) },
     city: { required, maxLength: maxLength(150) },
     area: { required, },
-    size: { required, numeric },
+    size: { required },
     property_type: { required },
-    min_price: { required, numeric, minValue: minValue(1) },
-    max_price: { required, numeric, minValue: minValue(1), maxPriceValidator },
+    min_price: { required },
     plan_status: { required },
     description: { required },
     handover: { required },
@@ -444,10 +435,6 @@ const rules = computed(() => ({
 
 const $v = useVuelidate(rules, { project });
 
-const maxPriceValid = computed(() => {
-  if (!project.value.min_price || !project.value.max_price) return true;
-  return Number(project.value.max_price) >= Number(project.value.min_price);
-});
 
 
 
@@ -477,7 +464,7 @@ const removeProjectImage = (index: number) => {
 
 const handleSubmit = async () => {
   $v.value.$touch();
-  if (!$v.value.$invalid && maxPriceValid.value) {
+  if (!$v.value.$invalid) {
 
     try {
       isLoading.value = true;
