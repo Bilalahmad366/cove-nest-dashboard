@@ -61,7 +61,7 @@ const fetchBlogs = async () => {
     try {
         isLoading.value = true;
         let response: any = await axios.get(`${import.meta.env.VITE_API_URL}/experts`)
-        rows.value = response;
+        rows.value = response.data;
         isLoading.value = false;
     } catch (error) {
         console.log(error);
