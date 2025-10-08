@@ -51,6 +51,7 @@ const search = ref("");
 const cols = ref([
     { field: "name", title: "Name", visible: true, hide: false, disabled: true },
     { field: "email", title: "Email", visible: true, hide: false, disabled: true },
+    { field: "message", title: "Message", visible: true, hide: false, disabled: true },
     { field: "mobile_no", title: "Phone", visible: true, hide: false, disabled: true },
 ]);
 
