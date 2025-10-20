@@ -3,7 +3,36 @@
     <form @submit.prevent="handleSubmit">
       <h1 class="text-2xl font-bold text-center  my-2"> {{ isEditMode ? 'Update Project' : 'Add Project' }}</h1>
 
+      <!-- About the Project Section -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-white-dark mb-2">About the Project</label>
+
+        <!-- Overview -->
+        <textarea v-model="project.about_overview" rows="4" placeholder="Write a short overview about the project..."
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-white"></textarea>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Key Highlights</label>
+
+          <div v-for="(point, index) in project.about_points" :key="index" class="flex items-center mb-2 gap-2">
+            <input v-model="project.about_points[index]" type="text"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter highlight point" />
+            <button type="button" @click="removeHighlight(index)" class="text-red-500 hover:text-red-700">
+              ✕
+            </button>
+          </div>
+
+          <button type="button" @click="addHighlight" class="mt-2 text-sm text-blue-600 hover:text-blue-800">
+            + Add another point
+          </button>
+        </div>
+
+      </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+
+
+
         <div class="space-y-4">
           <!-- Project Name -->
           <div :class="{ 'has-error': $v.project.project_name.$error }">
@@ -151,6 +180,38 @@
             </div>
           </div>
 
+          <!-- Payment Plans Section -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-white-dark mb-2">
+              Payment Plans
+            </label>
+            <div>
+              <textarea v-model="project.payment_plans.description" placeholder="Enter payment plans description"
+                rows="4" class="form-input placeholder:text-white-dark resize-none"></textarea>
+
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+                <p class="text-sm text-black dark:text-gray-300 mb-1">Down Payment</p>
+                <input type="text" v-model="project.payment_plans.on_downpayment" placeholder="e.g. 20%"
+                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+              </div>
+
+              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+                <p class="text-sm text-black dark:text-gray-300 mb-1">During Construction</p>
+                <input type="text" v-model="project.payment_plans.on_construction" placeholder="e.g. 50%"
+                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+              </div>
+
+              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+                <p class="text-sm text-black dark:text-gray-300 mb-1">On Handover</p>
+                <input type="text" v-model="project.payment_plans.on_handover" placeholder="e.g. 30%"
+                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+              </div>
+            </div>
+          </div>
+
           <!-- Plan Status -->
           <div :class="{ 'has-error': $v.project.plan_status.$error }">
             <label class="block text-sm font-medium text-white-dark">Plan Status</label>
@@ -260,7 +321,6 @@ import LoaderIcon from "@/core/components/icon/icon-loader.vue";
 import { useMeta } from '@/core/composables/use-meta';
 import axios from "axios";
 
-
 const amenities = ref<string[]>([]);
 const newAmenity = ref("");
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -277,12 +337,19 @@ const projectjectDocuments = ref<any>([]);
 const ProjectNameOption = ref<any[]>([]);
 const DeveloperNameOption = ref<any[]>([]);
 const project = ref<any>({
+  about_overview: "",
+  about_points: [],
   project_name: "",
   developer_name: "",
   location: "",
   city: "",
   area: "",
   property_type: [],
+  payment_plans: {
+    on_downpayment: "",
+    on_construction: "",
+    on_handover: ""
+  },
   min_price: "",
   max_price: "",
   plan_status: "",
@@ -296,6 +363,13 @@ const project = ref<any>({
 const categoryOptions = ref(["Waterfront Properties", "Near Golf Course", "Luxury Properties", "Beachfront Properties", "Branded Residences"]);
 const propertyTypeOptions = ref(["Apartment", "Penthouse", "Villa", "Town House"]);
 
+const addHighlight = () => {
+  project.value.about_points.push("");
+};
+
+const removeHighlight = (index) => {
+  project.value.about_points.splice(index, 1);
+};
 
 const addNewProject = (newName: string) => {
   ProjectNameOption.value.push(newName);
@@ -323,14 +397,6 @@ function removeAmenity(index: number) {
 }
 
 
-const maxPriceValidator = helpers.withParams(
-  { message: "Max Price must be greater than or equal to Min Price" },
-  (value) => {
-    if (!value || !project.value.min_price) return true;
-    return Number(value) >= Number(project.value.min_price);
-  }
-);
-
 const resetForm = () => {
 
   project.value = {
@@ -341,6 +407,14 @@ const resetForm = () => {
     area: "",
     size: "",
     property_type: [],
+    about_overview: "",
+    about_points: [],
+    payment_plans: {
+      on_downpayment: "",
+      on_construction: "",
+      on_handover: "",
+      description: ""
+    },
     min_price: "",
     max_price: "",
     plan_status: "",
@@ -381,11 +455,32 @@ onMounted(async () => {
       project.value = {
         project_name: response.project_name,
         developer_name: response.developer_name,
+        about_overview: response.about_overview || "",
+        about_points: Array.isArray(response.about_points)
+          ? response.about_points
+          : typeof response.about_points === "string"
+            ? (() => {
+              try {
+                const parsed = JSON.parse(response.about_points);
+                return Array.isArray(parsed)
+                  ? parsed
+                  : response.about_points.split(",").map(p => p.trim());
+              } catch {
+                return response.about_points.split(",").map(p => p.trim());
+              }
+            })()
+            : [],
         location: response.location,
         city: response.city,
         area: response.area,
         size: response.size,
         property_type: response.property_type,
+        payment_plans: response.payment_plans || {
+          on_downpayment: "",
+          on_construction: "",
+          on_handover: "",
+          description: ""
+        },
         min_price: response.min_price,
         max_price: response.max_price,
         plan_status: response.plan_status,
@@ -395,6 +490,15 @@ onMounted(async () => {
         is_best: response.isBestArea,
       };
       amenities.value = response.amenities;
+      // 🩵 Fix for double JSON array
+      if (Array.isArray(project.value.about_points) && project.value.about_points.length === 1) {
+        try {
+          const parsed = JSON.parse(project.value.about_points[0]);
+          if (Array.isArray(parsed)) project.value.about_points = parsed;
+        } catch (e) {
+          console.error("Error parsing about_points:", e);
+        }
+      }
 
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Failed to fetch project.";
@@ -484,6 +588,10 @@ const handleSubmit = async () => {
       formData.append("plan_status", project.value.plan_status);
       formData.append("handover", project.value.handover);
       formData.append("property_type", project.value.property_type);
+      formData.append("payment_plans", JSON.stringify(project.value.payment_plans));
+      formData.append("about_overview", project.value.about_overview || "");
+      formData.append("about_points", JSON.stringify(project.value.about_points || []));
+
       formData.append("category", project.value.category);
       formData.append("isBestArea", project.value.is_best);
       formData.append("description", project.value.description);
