@@ -29,221 +29,210 @@
         </div>
 
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Project Name -->
+        <div :class="{ 'has-error': $v.project.project_name.$error }">
+          <label class="block text-sm font-medium text-white-dark">Project Name</label>
+          <input v-model.trim="$v.project.project_name.$model" type="text" placeholder="Enter project name"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.project_name.$error" class="text-danger mt-1">
+            {{ $v.project.project_name.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Developer Name -->
+        <div :class="{ 'has-error': $v.project.developer.$error }">
+          <label class="block text-sm font-medium text-white-dark">Developer Name</label>
+          <multiselect v-model="$v.project.developer.$model" :options="DeveloperNameOption" class="custom-multiselect"
+            :searchable="true" label="label" :allow-empty="false" :multiple="false" placeholder="Select developer" />
+          <p v-if="$v.project.developer.$error" class="text-danger mt-1">
+            {{ $v.project.developer.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Area -->
+        <div :class="{ 'has-error': $v.project.area.$error }">
+          <label class="block text-sm font-medium text-white-dark">Area</label>
+          <multiselect v-model="$v.project.area.$model" :options="AreasOption" class="custom-multiselect"
+            :searchable="true" label="label" track-by="value" :allow-empty="false" :multiple="false"
+            placeholder="Select area" />
+          <p v-if="$v.project.area.$error" class="text-danger mt-1">
+            {{ $v.project.area.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Location -->
+        <div :class="{ 'has-error': $v.project.location.$error }">
+          <label class="block text-sm font-medium text-white-dark">Location</label>
+          <input v-model.trim="$v.project.location.$model" type="text" placeholder="Enter Location"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.location.$error" class="text-danger mt-1">
+            {{ $v.project.location.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- City -->
+        <div :class="{ 'has-error': $v.project.city.$error }">
+          <label class="block text-sm font-medium text-white-dark">City</label>
+          <input v-model.trim="$v.project.city.$model" type="text" placeholder="Enter City"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.city.$error" class="text-danger mt-1">
+            {{ $v.project.city.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- size -->
+        <div :class="{ 'has-error': $v.project.size.$error }">
+          <label class="block text-sm font-medium text-white-dark">size </label>
+          <input v-model.trim="$v.project.size.$model" type="text" placeholder="Enter size"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.size.$error" class="text-danger mt-1">
+            {{ $v.project.size.$errors[0].$message }}
+          </p>
+        </div>
 
 
 
-        <div class="space-y-4">
-          <!-- Project Name -->
-          <div :class="{ 'has-error': $v.project.project_name.$error }">
-            <label class="block text-sm font-medium text-white-dark">Project Name</label>
-            <multiselect v-model="$v.project.project_name.$model" :options="ProjectNameOption"
-              class="custom-multiselect" :searchable="true" :allow-empty="false" :multiple="false"
-              placeholder="Select or Create Project" :taggable="true" @tag="addNewProject" />
-            <p v-if="$v.project.project_name.$error" class="text-danger mt-1">
-              {{ $v.project.project_name.$errors[0].$message }}
-            </p>
+        <!-- Property Type -->
+        <div :class="{ 'has-error': $v.project.property_type.$error }">
+          <label class="block text-sm font-medium text-white-dark">Property Type</label>
+          <multiselect v-model="$v.project.property_type.$model" :options="propertyTypeOptions"
+            class="custom-multiselect" :searchable="false" :allow-empty="false" :multiple="false"
+            placeholder="Select Property Type" />
+
+          <p v-if="$v.project.property_type.$error" class="text-danger mt-1">
+            {{ $v.project.property_type.$errors[0].$message }}
+          </p>
+        </div>
+
+
+        <!-- Categories -->
+        <div>
+          <label class="block text-sm font-medium text-white-dark">Categories</label>
+          <multiselect v-model="project.category" :options="categoryOptions" class="custom-multiselect"
+            :multiple="false" :searchable="false" placeholder="Select or add categories" />
+        </div>
+
+        <!-- Handover  -->
+        <div :class="{ 'has-error': $v.project.handover.$error }">
+          <label class="block text-sm font-medium text-white-dark">Hand Over</label>
+          <input v-model.trim="$v.project.handover.$model" type="text" placeholder="Enter handover"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.handover.$error" class="text-danger mt-1">
+            {{ $v.project.handover.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Minimum Price -->
+        <div :class="{ 'has-error': $v.project.min_price.$error }">
+          <label class="block text-sm font-medium text-white-dark">Minimum Price</label>
+          <input v-model.trim="$v.project.min_price.$model" type="test" placeholder="Enter Minimum Price"
+            class="form-input placeholder:text-white-dark" />
+          <p v-if="$v.project.min_price.$error" class="text-danger mt-1">
+            <span v-if="!$v.project.min_price.required">Min Price is required</span>
+          </p>
+        </div>
+
+        <!-- Maximum Price -->
+        <div>
+          <label class="block text-sm font-medium text-white-dark">Maximum Price</label>
+          <input v-model="project.max_price" type="text" placeholder="Enter Maximum Price"
+            class="form-input placeholder:text-white-dark" />
+        </div>
+
+        <!-- Plan Status -->
+        <div :class="{ 'has-error': $v.project.plan_status.$error }">
+          <label class="block text-sm font-medium text-white-dark">Plan Status</label>
+          <div class="flex gap-6 mt-2">
+            <label class="flex items-center gap-2">
+              <input type="radio" value="Offplan" class="form-radio" v-model="$v.project.plan_status.$model" />
+              Offplan
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" value="Onplan" class="form-radio" v-model="$v.project.plan_status.$model" />
+              Onplan
+            </label>
           </div>
+          <p v-if="$v.project.plan_status.$error" class="text-danger mt-1">
+            {{ $v.project.plan_status.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div :class="{ 'has-error': $v.project.description.$error }">
+          <label class="block text-sm font-medium text-white-dark">Description</label>
+          <textarea v-model.trim="$v.project.description.$model as string" placeholder="Enter project description"
+            rows="4" class="form-input placeholder:text-white-dark resize-none"></textarea>
+          <p v-if="$v.project.description.$error" class="text-danger mt-1">
+            {{ $v.project.description.$errors[0].$message }}
+          </p>
+        </div>
+
+        <!-- Best Toggle -->
+        <div>
+          <label class="block text-sm font-medium text-white-dark mb-2">Mark as Best Area</label>
+          <button type="button" @click="project.is_best = !project.is_best" :class="[
+            'relative inline-flex h-6 w-12 items-center rounded-full transition',
+            project.is_best ? 'bg-lime-700' : 'bg-gray-400'
+          ]">
+            <span :class="[
+              'inline-block h-5 w-5 transform rounded-full bg-white transition',
+              project.is_best ? 'translate-x-6' : 'translate-x-1'
+            ]" />
+          </button>
+        </div>
 
 
-          <!-- Developer Name -->
-          <div :class="{ 'has-error': $v.project.developer_name.$error }">
-            <label class="block text-sm font-medium text-white-dark">Developer Name</label>
-            <multiselect v-model="$v.project.developer_name.$model" :options="DeveloperNameOption"
-              class="custom-multiselect" :searchable="true" :allow-empty="false" :multiple="false"
-              placeholder="Select or Create Project" :taggable="true" @tag="addNewDeveloper" />
-            <p v-if="$v.project.developer_name.$error" class="text-danger mt-1">
-              {{ $v.project.developer_name.$errors[0].$message }}
-            </p>
-          </div>
-
-          <!-- Location -->
-          <div :class="{ 'has-error': $v.project.location.$error }">
-            <label class="block text-sm font-medium text-white-dark">Location</label>
-            <input v-model.trim="$v.project.location.$model" type="text" placeholder="Enter Location"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.location.$error" class="text-danger mt-1">
-              {{ $v.project.location.$errors[0].$message }}
-            </p>
-          </div>
-
-          <!-- City -->
-          <div :class="{ 'has-error': $v.project.city.$error }">
-            <label class="block text-sm font-medium text-white-dark">City</label>
-            <input v-model.trim="$v.project.city.$model" type="text" placeholder="Enter City"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.city.$error" class="text-danger mt-1">
-              {{ $v.project.city.$errors[0].$message }}
-            </p>
-          </div>
-
-          <!-- size -->
-          <div :class="{ 'has-error': $v.project.size.$error }">
-            <label class="block text-sm font-medium text-white-dark">size </label>
-            <input v-model.trim="$v.project.size.$model" type="text" placeholder="Enter size"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.size.$error" class="text-danger mt-1">
-              {{ $v.project.size.$errors[0].$message }}
-            </p>
-          </div>
-          <!-- Area -->
-          <div :class="{ 'has-error': $v.project.area.$error }">
-            <label class="block text-sm font-medium text-white-dark">Area</label>
-            <input v-model.trim="$v.project.area.$model" type="text" placeholder="Enter area"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.area.$error" class="text-danger mt-1">
-              {{ $v.project.area.$errors[0].$message }}
-            </p>
-          </div>
-          <!-- Description -->
-          <div :class="{ 'has-error': $v.project.description.$error }">
-            <label class="block text-sm font-medium text-white-dark">Description</label>
-            <textarea v-model.trim="$v.project.description.$model as string" placeholder="Enter project description"
-              rows="4" class="form-input placeholder:text-white-dark resize-none"></textarea>
-            <p v-if="$v.project.description.$error" class="text-danger mt-1">
-              {{ $v.project.description.$errors[0].$message }}
-            </p>
-          </div>
-
+      </div>
+      <!-- Payment Plans Section -->
+      <div class="my-4">
+        <label class="block text-sm font-medium text-black mb-2">
+          Payment Plans
+        </label>
+        <div>
+          <textarea v-model="project.payment_plans.description" placeholder="Enter payment plans description" rows="4"
+            class="form-input placeholder:text-white-dark resize-none"></textarea>
 
         </div>
 
-        <div class="space-y-4">
-          <!-- Property Type -->
-          <div :class="{ 'has-error': $v.project.property_type.$error }">
-            <label class="block text-sm font-medium text-white-dark">Property Type</label>
-            <multiselect v-model="$v.project.property_type.$model" :options="propertyTypeOptions"
-              class="custom-multiselect" :searchable="false" :allow-empty="false" :multiple="false"
-              placeholder="Select Property Type" />
-
-            <p v-if="$v.project.property_type.$error" class="text-danger mt-1">
-              {{ $v.project.property_type.$errors[0].$message }}
-            </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+            <p class="text-sm text-black dark:text-gray-300 mb-1">Down Payment</p>
+            <input type="text" v-model="project.payment_plans.on_downpayment" placeholder="e.g. 20%"
+              class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           </div>
 
-
-          <!-- Categories -->
-          <div>
-            <label class="block text-sm font-medium text-white-dark">Categories</label>
-            <multiselect v-model="project.category" :options="categoryOptions" class="custom-multiselect"
-              :multiple="false" :searchable="false" placeholder="Select or add categories" />
+          <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+            <p class="text-sm text-black dark:text-gray-300 mb-1">During Construction</p>
+            <input type="text" v-model="project.payment_plans.on_construction" placeholder="e.g. 50%"
+              class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           </div>
 
-          <!-- Handover  -->
-          <div :class="{ 'has-error': $v.project.handover.$error }">
-            <label class="block text-sm font-medium text-white-dark">Hand Over</label>
-            <input v-model.trim="$v.project.handover.$model" type="text" placeholder="Enter handover"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.handover.$error" class="text-danger mt-1">
-              {{ $v.project.handover.$errors[0].$message }}
-            </p>
+          <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
+            <p class="text-sm text-black dark:text-gray-300 mb-1">On Handover</p>
+            <input type="text" v-model="project.payment_plans.on_handover" placeholder="e.g. 30%"
+              class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           </div>
+        </div>
+      </div>
+      <!-- Amenities Section -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-white-dark">Amenities</label>
 
-          <!-- Minimum Price -->
-          <div :class="{ 'has-error': $v.project.min_price.$error }">
-            <label class="block text-sm font-medium text-white-dark">Minimum Price</label>
-            <input v-model.trim="$v.project.min_price.$model" type="test" placeholder="Enter Minimum Price"
-              class="form-input placeholder:text-white-dark" />
-            <p v-if="$v.project.min_price.$error" class="text-danger mt-1">
-              <span v-if="!$v.project.min_price.required">Min Price is required</span>
-            </p>
-          </div>
-
-          <!-- Maximum Price -->
-          <div>
-            <label class="block text-sm font-medium text-white-dark">Maximum Price</label>
-            <input v-model="project.max_price" type="text" placeholder="Enter Maximum Price"
-              class="form-input placeholder:text-white-dark" />
-
-
-          </div>
-
-
-          <!-- Amenities Section -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-white-dark">Amenities</label>
-
-            <div class="flex flex-wrap items-center gap-2 border rounded p-2 cursor-text" @click="inputRef?.focus()">
-              <!-- Tags -->
-              <span v-for="(amenity, index) in amenities" :key="index"
-                class="bg-lime-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
-                {{ amenity }}
-                <button type="button" class="text-xs bg-white/30 rounded-full px-1" @click.stop="removeAmenity(index)">
-                  ✕
-                </button>
-              </span>
-
-              <!-- Input -->
-              <input ref="inputRef" v-model="newAmenity" @keydown.enter.prevent="addAmenity" @keydown="checkComma"
-                placeholder="Type and press Enter or Comma to Add Multiple"
-                class="flex-1 outline-none text-sm bg-transparent" />
-            </div>
-          </div>
-
-          <!-- Payment Plans Section -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-white-dark mb-2">
-              Payment Plans
-            </label>
-            <div>
-              <textarea v-model="project.payment_plans.description" placeholder="Enter payment plans description"
-                rows="4" class="form-input placeholder:text-white-dark resize-none"></textarea>
-
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
-                <p class="text-sm text-black dark:text-gray-300 mb-1">Down Payment</p>
-                <input type="text" v-model="project.payment_plans.on_downpayment" placeholder="e.g. 20%"
-                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
-              </div>
-
-              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
-                <p class="text-sm text-black dark:text-gray-300 mb-1">During Construction</p>
-                <input type="text" v-model="project.payment_plans.on_construction" placeholder="e.g. 50%"
-                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
-              </div>
-
-              <div class="p-4 dark:bg-[#1e293b]/50 rounded-xl border border-white/10">
-                <p class="text-sm text-black dark:text-gray-300 mb-1">On Handover</p>
-                <input type="text" v-model="project.payment_plans.on_handover" placeholder="e.g. 30%"
-                  class="w-full bg-transparent border border-gray-600 text-black dark:text-white placeholder-gray-400 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Plan Status -->
-          <div :class="{ 'has-error': $v.project.plan_status.$error }">
-            <label class="block text-sm font-medium text-white-dark">Plan Status</label>
-            <div class="flex gap-6 mt-2">
-              <label class="flex items-center gap-2">
-                <input type="radio" value="Offplan" class="form-radio" v-model="$v.project.plan_status.$model" />
-                Offplan
-              </label>
-              <label class="flex items-center gap-2">
-                <input type="radio" value="Onplan" class="form-radio" v-model="$v.project.plan_status.$model" />
-                Onplan
-              </label>
-            </div>
-            <p v-if="$v.project.plan_status.$error" class="text-danger mt-1">
-              {{ $v.project.plan_status.$errors[0].$message }}
-            </p>
-          </div>
-
-          <!-- Best Toggle -->
-          <div>
-            <label class="block text-sm font-medium text-white-dark mb-2">Mark as Best Area</label>
-            <button type="button" @click="project.is_best = !project.is_best" :class="[
-              'relative inline-flex h-6 w-12 items-center rounded-full transition',
-              project.is_best ? 'bg-lime-700' : 'bg-gray-400'
-            ]">
-              <span :class="[
-                'inline-block h-5 w-5 transform rounded-full bg-white transition',
-                project.is_best ? 'translate-x-6' : 'translate-x-1'
-              ]" />
+        <div class="flex flex-wrap items-center gap-2 border rounded p-2 cursor-text" @click="inputRef?.focus()">
+          <!-- Tags -->
+          <span v-for="(amenity, index) in amenities" :key="index"
+            class="bg-lime-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
+            {{ amenity }}
+            <button type="button" class="text-xs bg-white/30 rounded-full px-1" @click.stop="removeAmenity(index)">
+              ✕
             </button>
-          </div>
+          </span>
 
+          <!-- Input -->
+          <input ref="inputRef" v-model="newAmenity" @keydown.enter.prevent="addAmenity" @keydown="checkComma"
+            placeholder="Type and press Enter or Comma to Add Multiple"
+            class="flex-1 outline-none text-sm bg-transparent" />
         </div>
       </div>
 
@@ -311,11 +300,12 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength, numeric, minValue, helpers } from "@vuelidate/validators";
-import { AllProjects } from "../composables/useProject";
 import Multiselect from "@suadelabs/vue3-multiselect";
 import "@suadelabs/vue3-multiselect/dist/vue3-multiselect.css";
 
-import { GetSingleProject } from "../composables/useProject";
+import { GetSingleProject, Info } from "../composables/useProject";
+import { AllDevelopers } from "../../Developers/composables/useDeveloper";
+import { AllAreas } from "../../Area/composables/useArea";
 import showMessage from "@/core/components/common/SweetAlert";
 import LoaderIcon from "@/core/components/icon/icon-loader.vue";
 import { useMeta } from '@/core/composables/use-meta';
@@ -330,17 +320,16 @@ const router = useRouter();
 const route = useRoute();
 const isEditMode = computed(() => !!route.params.id);
 useMeta({ title: `${isEditMode.value ? 'Update project' : 'Add project'} ` });
-const loader = ref(false);
 const errorMessage = ref<string | null>(null);
 const isLoading = ref(false);
 const projectjectDocuments = ref<any>([]);
-const ProjectNameOption = ref<any[]>([]);
 const DeveloperNameOption = ref<any[]>([]);
+const AreasOption = ref<any[]>([]);
 const project = ref<any>({
   about_overview: "",
   about_points: [],
   project_name: "",
-  developer_name: "",
+  developer: "",
   location: "",
   city: "",
   area: "",
@@ -371,14 +360,7 @@ const removeHighlight = (index) => {
   project.value.about_points.splice(index, 1);
 };
 
-const addNewProject = (newName: string) => {
-  ProjectNameOption.value.push(newName);
-  project.value.project_name = newName;
-};
-const addNewDeveloper = (newName: string) => {
-  DeveloperNameOption.value.push(newName);
-  project.value.developer_name = newName;
-};
+
 function addAmenity() {
   if (newAmenity.value.trim() !== "") {
     amenities.value.push(newAmenity.value.trim());
@@ -401,7 +383,7 @@ const resetForm = () => {
 
   project.value = {
     project_name: "",
-    developer_name: "",
+    developer: "",
     location: "",
     city: "",
     area: "",
@@ -454,7 +436,6 @@ onMounted(async () => {
 
       project.value = {
         project_name: response.project_name,
-        developer_name: response.developer_name,
         about_overview: response.about_overview || "",
         about_points: Array.isArray(response.about_points)
           ? response.about_points
@@ -472,7 +453,6 @@ onMounted(async () => {
             : [],
         location: response.location,
         city: response.city,
-        area: response.area,
         size: response.size,
         property_type: response.property_type,
         payment_plans: response.payment_plans || {
@@ -490,6 +470,22 @@ onMounted(async () => {
         is_best: response.isBestArea,
       };
       amenities.value = response.amenities;
+
+      let payload = {
+        developerId: response.developer,
+        areaId: response.area
+      }
+      let res: any = await Info(payload);
+      project.value.developer = {
+        label: res.developer.name,
+        value: res.developer._id
+      };
+
+      project.value.area = {
+        label: res.area.name,
+        value: res.area._id
+      };
+
       // 🩵 Fix for double JSON array
       if (Array.isArray(project.value.about_points) && project.value.about_points.length === 1) {
         try {
@@ -512,9 +508,17 @@ onMounted(async () => {
 const fetchProjects = async () => {
   try {
     isLoading.value = true;
-    let response: any = await AllProjects();
-    ProjectNameOption.value = response.map((project: any) => project.project_name);
-    DeveloperNameOption.value = response.map((project: any) => project.developer_name);
+    let response: any = await AllDevelopers();
+    let res: any = await AllAreas();
+    DeveloperNameOption.value = response.developers.map((dev: any) => ({
+      label: dev.name,
+      value: dev._id,
+    }));
+    AreasOption.value = res.areas.map((dev: any) => ({
+      label: dev.name,
+      value: dev._id,
+    }));
+
 
     isLoading.value = false;
   } catch (error) {
@@ -524,7 +528,7 @@ const fetchProjects = async () => {
 const rules = computed(() => ({
   project: {
     project_name: { required, maxLength: maxLength(255) },
-    developer_name: { required, maxLength: maxLength(255) },
+    developer: { required, maxLength: maxLength(255) },
     location: { required, maxLength: maxLength(255) },
     city: { required, maxLength: maxLength(150) },
     area: { required, },
@@ -567,6 +571,8 @@ const removeProjectImage = (index: number) => {
 };
 
 const handleSubmit = async () => {
+
+  console.log(project.value.developer.value)
   $v.value.$touch();
   if (!$v.value.$invalid) {
 
@@ -578,10 +584,10 @@ const handleSubmit = async () => {
 
       const formData = new FormData();
       formData.append("project_name", project.value.project_name);
-      formData.append("developer_name", project.value.developer_name);
+      formData.append("developer", project.value.developer.value);
       formData.append("location", project.value.location);
       formData.append("city", project.value.city);
-      formData.append("area", project.value.area);
+      formData.append("area", project.value.area.value);
       formData.append("size", project.value.size);
       formData.append("min_price", project.value.min_price);
       formData.append("max_price", project.value.max_price);
