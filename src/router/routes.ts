@@ -57,6 +57,62 @@ export const appRoutes = [
       // requiresAuth: true,
     },
   },
+  // developers routes
+  {
+    path: "/developers",
+    name: "developers",
+    component: () => import("@/modules/Developers/veiws/Developers.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/developer/add-developer",
+    name: "add-developer",
+    component: () => import("@/modules/Developers/veiws/AddDeveloper.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/developer/update-developer/:id",
+    name: "update-developer",
+    component: () => import("@/modules/Developers/veiws/AddDeveloper.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  // area routes
+  {
+    path: "/areas",
+    name: "areas",
+    component: () => import("@/modules/Area/veiws/Areas.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/area/add-area",
+    name: "add-area",
+    component: () => import("@/modules/Area/veiws/AddArea.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/area/update-area/:id",
+    name: "update-area",
+    component: () =>import("@/modules/Area/veiws/AddArea.vue"),
+    meta: {
+      layout: "app",
+      requiresAuth: true,
+    },
+  },
 
   //  projects Routes
   {

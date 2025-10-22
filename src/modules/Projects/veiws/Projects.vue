@@ -46,7 +46,7 @@ import { useAppStore } from "@/core/store";
 import router from "@/router";
 import iconTrash from "@/core/components/icon/icon-trash.vue";
 import iconEdit from "@/core/components/icon/icon-edit.vue";
-import { AllProjects, DeleteProject } from "../composables/useProject";
+import { AllProjects, DeleteProject, Info } from "../composables/useProject";
 import { showAlert } from "@/core/components/common/alertForDelete";
 import showMessage from "@/core/components/common/SweetAlert";
 import SkeletonLoader from "@/core/components/common/SkeletonLoader.vue";
@@ -61,7 +61,8 @@ const store = useAppStore();
 const search = ref("");
 const cols = ref([
     { field: "project_name", title: "Project Name", visible: true, hide: false, disabled: true },
-    { field: "developer_name", title: "Developer Name", visible: true, hide: false, disabled: true },
+    { field: "developer.label", title: "Developer Name", visible: true, hide: false, disabled: true },
+    { field: "area.label", title: "Area", visible: true, hide: false, disabled: true },
     { field: "location", title: "Location", visible: true, hide: false, disabled: true },
     { field: "city", title: "City", visible: true, hide: false, disabled: true },
     { field: "size", title: "Size (sq ft)", visible: true, hide: false, disabled: true },
@@ -101,14 +102,38 @@ const fetchProjects = async () => {
     try {
         isLoading.value = true;
         let response: any = await AllProjects();
-        rows.value = response.map((project: any) => {
-            return {
-                ...project,
-                handover: project.handover?.from && project.handover?.to
-                    ? `${project.handover.from.split("T")[0]} → ${project.handover.to.split("T")[0]}`
-                    : "N/A"
-            };
-        });
+        const projectsWithDetails = await Promise.all(
+            response.map(async (project: any) => {
+                try {
+                    const data = {
+                        developerId: project.developer,
+                        areaId: project.area
+                    }
+                    const infoRes:any = await Info(data);
+                    return {
+                        ...project,
+                        developer: {
+                            label: infoRes.developer.name,
+                        },
+                        area: {
+                            label: infoRes.area.name,
+                        },
+                    };
+                } catch (error) {
+                    console.error("Error fetching info:", error);
+                    return project;
+                }
+            })
+        );
+
+        rows.value = projectsWithDetails;
+
+        // rows.value = response.map((project: any) => {
+        //     return {
+        //         ...project,
+
+        //     };
+        // });
         isLoading.value = false;
     } catch (error) {
         console.log(error);

@@ -4,7 +4,7 @@
       class="sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300">
       <div class="bg-white dark:bg-[#0e1726] h-full">
         <div class="flex justify-between items-center px-4">
-          <router-link to="/dashboard" class="main-logo flex items-center shrink-0">
+          <router-link to="/expert-requests" class="main-logo flex items-center shrink-0">
             <img class="w-32 ml-[4px] flex-none" src="/assets/images/logo.png" alt="Cove Nest logo" />
             <!-- <span class="text-2xl ltr:ml-1.5 rtl:mr-1.5 font-semibold align-middle lg:inline dark:text-white-light">VRISTO</span> -->
           </router-link>
@@ -31,6 +31,86 @@
                                     <icon-caret-down />
                                 </div> -->
             </button>
+            </li>
+            <!-- developer -->
+            <li class="menu nav-item">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Developer' }"
+                @click="
+                  activeDropdown === 'Developer'
+                    ? (activeDropdown = null)
+                    : (activeDropdown = 'Developer')
+                  ">
+                <div class="flex items-center">
+                  <iconproperty class="group-hover:!text-lime-700  shrink-0" />
+
+                  <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
+                    $t("Developer") }}</span>
+                </div>
+                <div :class="{
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Developer',
+                }">
+                  <icon-caret-down />
+                </div>
+              </button>
+              <vue-collapsible :isOpen="activeDropdown === 'Developer'">
+                <ul class="sub-menu text-gray-500">
+
+
+                  <li>
+                    <router-link to="/developers" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("Developers") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/developer/add-developer" @click="toggleMobileMenu"
+                      class="flex items-center space-x-2 group">
+                      <span>{{ $t("Add Developer") }}</span>
+                    </router-link>
+                  </li>
+
+
+                </ul>
+              </vue-collapsible>
+            </li>
+            <!-- area -->
+            <li class="menu nav-item">
+              <button type="button" class="nav-link group w-full" :class="{ active: activeDropdown === 'Area' }"
+                @click="
+                  activeDropdown === 'Area'
+                    ? (activeDropdown = null)
+                    : (activeDropdown = 'Area')
+                  ">
+                <div class="flex items-center">
+                  <iconproperty class="group-hover:!text-lime-700  shrink-0" />
+
+                  <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
+                    $t("Area") }}</span>
+                </div>
+                <div :class="{
+                  'rtl:rotate-90 -rotate-90': activeDropdown !== 'Area',
+                }">
+                  <icon-caret-down />
+                </div>
+              </button>
+              <vue-collapsible :isOpen="activeDropdown === 'Area'">
+                <ul class="sub-menu text-gray-500">
+
+
+                  <li>
+                    <router-link to="/areas" @click="toggleMobileMenu" class="flex items-center space-x-2 group">
+                      <span>{{ $t("Areas") }}</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/area/add-area" @click="toggleMobileMenu"
+                      class="flex items-center space-x-2 group">
+                      <span>{{ $t("Add Area") }}</span>
+                    </router-link>
+                  </li>
+
+
+                </ul>
+              </vue-collapsible>
             </li>
             <!-- projects -->
             <li class="menu nav-item">
