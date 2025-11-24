@@ -91,13 +91,11 @@
           </p>
         </div>
 
-
-
         <!-- Property Type -->
         <div :class="{ 'has-error': $v.project.property_type.$error }">
           <label class="block text-sm font-medium text-white-dark">Property Type</label>
           <multiselect v-model="$v.project.property_type.$model" :options="propertyTypeOptions"
-            class="custom-multiselect" :searchable="false" :allow-empty="false" :multiple="false"
+            class="custom-multiselect" :searchable="false" :allow-empty="false" :multiple="true"
             placeholder="Select Property Type" />
 
           <p v-if="$v.project.property_type.$error" class="text-danger mt-1">
@@ -362,11 +360,15 @@ const removeHighlight = (index) => {
 
 
 function addAmenity() {
-  if (newAmenity.value.trim() !== "") {
-    amenities.value.push(newAmenity.value.trim());
-    newAmenity.value = "";
-  }
+  if (newAmenity.value.trim() === "") return;
+  const parts = newAmenity.value
+    .split(",")
+    .map(p => p.trim())
+    .filter(p => p !== "");
+  amenities.value.push(...parts);
+  newAmenity.value = "";
 }
+
 function checkComma(e: KeyboardEvent) {
   if (e.key === ",") {
     e.preventDefault();
@@ -433,6 +435,21 @@ onMounted(async () => {
         }));
       }
 
+      // Ensure property_type is always an array of strings
+      let propertyTypes: string[] = [];
+
+      if (Array.isArray(response.property_type) && response.property_type.length > 0) {
+        const first = response.property_type[0];
+
+        try {
+          const parsed = JSON.parse(first);
+          propertyTypes = Array.isArray(parsed) ? parsed : first.split(",").map(p => p.trim());
+        } catch {
+          propertyTypes = first.split(",").map(p => p.trim());
+        }
+      }
+
+
 
       project.value = {
         project_name: response.project_name,
@@ -454,7 +471,7 @@ onMounted(async () => {
         location: response.location,
         city: response.city,
         size: response.size,
-        property_type: response.property_type,
+        property_type: propertyTypes,
         payment_plans: response.payment_plans || {
           on_downpayment: "",
           on_construction: "",
@@ -581,7 +598,6 @@ const handleSubmit = async () => {
 
       const API_BASE = import.meta.env.VITE_API_URL;
       const token = localStorage.getItem("token");
-
       const formData = new FormData();
       formData.append("project_name", project.value.project_name);
       formData.append("developer", project.value.developer.value);
@@ -593,7 +609,7 @@ const handleSubmit = async () => {
       formData.append("max_price", project.value.max_price);
       formData.append("plan_status", project.value.plan_status);
       formData.append("handover", project.value.handover);
-      formData.append("property_type", project.value.property_type);
+      formData.append("property_type", JSON.stringify(project.value.property_type));
       formData.append("payment_plans", JSON.stringify(project.value.payment_plans));
       formData.append("about_overview", project.value.about_overview || "");
       formData.append("about_points", JSON.stringify(project.value.about_points || []));
